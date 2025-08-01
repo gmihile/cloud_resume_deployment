@@ -12,16 +12,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest 
 
-    
-     
-    steps:
-       - name: view code
-         uses: actions/checkout@v3
 
+    steps:
+       - name: check repo code
+         uses: actions/checkout@v3
+         
        - name: Configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v2
+         
          with:
-             aws-acces-key-id: 
+             aws-acces-key-id: ${{secrets.ACCESS-KEY}}
+             aws-secret-access-key: ${{secrets.SECERET_KEY}}
+             aws-region: us-west-2
+
+
+       - name: Deploy HTML file to specfied S3 Bucket in AWS
+         run: aws s3 sync . s3://gouled-resume --delete
+         
+       - name: Success Message
+         run: echo "Deployment to S3 bucket has been completed and was successfull!"
+       
+       
            
  
 
